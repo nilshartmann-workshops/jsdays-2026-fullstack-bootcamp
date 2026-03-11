@@ -1,0 +1,29 @@
+type Book {
+  id: ID!
+  # Nullable 🤔
+  #  - could be missing in the datasources at all
+  #  - there could be a problem with fetching the data (if it exists)
+  author: Author
+  title: String!
+  isbn: String!
+  pages: Int!
+  year: Int!
+}
+
+extend type Query {
+  bookById(id: ID!): Book
+  books: [Book!]!
+}
+
+# Unfortunately we cannot reuse (parts of) the Book type here :-(
+input CreateBookInput {
+  authorId: ID!
+  title: String!
+  isbn: String!
+  pages: Int!
+  year: Int!
+}
+
+extend type Mutation {
+  createBook(input: CreateBookInput!): Book!
+}

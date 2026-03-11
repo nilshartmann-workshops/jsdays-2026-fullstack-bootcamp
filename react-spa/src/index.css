@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-space: "Space Grotesk", var(--font-sans);
+  --font-inter: "inter", var(--font-sans);
+  --font-poppins: "barlow", var(--font-sans);
+  --font-caveat: "Caveat", var(--font-serif);
+}
+
+/* Base Styles */
+#root {
+  @apply container mx-auto max-w-7xl px-4 py-8;
+}
+
+header {
+  @apply flex items-center justify-between;
+}
+
+header nav {
+  @apply flex gap-x-8 gap-y-2 p-2;
+}
+
+h1 {
+  @apply mb-6 text-4xl font-bold text-gray-900;
+}
+
+/* Table Styles */
+table {
+  @apply w-full border-separate border-spacing-0 overflow-hidden rounded-lg shadow-sm;
+}
+
+thead {
+  @apply bg-linear-to-r from-gray-50 to-gray-100;
+}
+
+th {
+  @apply border-b-2 border-gray-200 px-6 py-4 text-left text-sm font-semibold tracking-wider text-gray-700 uppercase;
+}
+
+tbody tr {
+  @apply border-b border-gray-300 transition-colors hover:bg-gray-100;
+}
+
+tbody tr:last-child {
+  @apply border-b-0;
+}
+
+td {
+  @apply px-6 py-4 text-sm text-gray-700;
+}
+
+/* Button Styles */
+button {
+  @apply cursor-pointer rounded-lg px-4 py-2 text-sm font-medium shadow-sm transition-all duration-200;
+  @apply bg-linear-to-r from-blue-500 to-blue-600 text-white;
+  @apply hover:from-blue-600 hover:to-blue-700 hover:shadow-md;
+  @apply disabled:cursor-not-allowed disabled:from-gray-300 disabled:to-gray-400 disabled:shadow-none;
+  @apply active:scale-95;
+}
+
+/* Link Styles */
+a {
+  @apply font-medium text-blue-600 underline-offset-4 transition-all duration-200;
+  @apply hover:text-blue-700 hover:underline;
+  @apply active:text-blue-800;
+}
+
+/* Card Styles */
+.Card {
+  @apply rounded-xl border border-gray-100 bg-white p-6 shadow-md;
+  @apply transition-all duration-200;
+  @apply hover:border-gray-200 hover:shadow-lg;
+  @apply mt-6;
+}
+
+.CardTitle {
+  @apply mb-4 text-xl font-bold text-gray-900;
+}
+
+.CardInfo {
+  @apply mb-2 text-sm text-gray-600;
+}
+
+.CardInfo:last-child {
+  @apply mb-0;
+}
+
+/* Form Styles */
+form {
+  @apply space-y-4;
+}
+
+label {
+  @apply mb-1 block text-sm font-semibold text-gray-700;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="url"],
+textarea {
+  @apply w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900;
+  @apply focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none;
+  @apply transition-all duration-200;
+  @apply placeholder:text-gray-400;
+}
+
+textarea {
+  @apply min-h-24 resize-y;
+}
+
+.InputError {
+  @apply mt-1 text-sm text-red-600;
+}
+
+/* Form Message Styles */
+.FormSuccess {
+  @apply rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-800;
+  @apply text-sm font-medium;
+}
+
+.FormError {
+  @apply rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-800;
+  @apply text-sm font-medium;
+}

@@ -1,0 +1,36 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Book store REST API with Express, TypeScript and SQLite",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "nodemon --watch src --watch .env --exec ts-node src/server.ts",
+    "build": "tsc",
+    "check": "tsc --build --noEmit",
+    "start": "node dist/server.js",
+    "prettier:check": "prettier --check .",
+    "prettier:write": "prettier --write ."
+  },
+  "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^8.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.3.1",
+    "express": "^4.21.2",
+    "jose": "^6.2.0",
+    "sql.js": "^1.12.0",
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^11.1.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.5",
+    "@types/swagger-ui-express": "^4.1.8",
+    "@types/uuid": "^10.0.0",
+    "nodemon": "^3.1.9",
+    "prettier": "^3.8.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}

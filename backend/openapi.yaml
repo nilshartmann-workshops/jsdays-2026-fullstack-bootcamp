@@ -1,0 +1,622 @@
+openapi: 3.0.3
+info:
+  title: Bookstore API
+  description: REST API for managing books, authors, addresses, and comments.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+
+paths:
+  # ── Authors ──────────────────────────────────────────────
+  /api/authors:
+    get:
+      tags: [Authors]
+      summary: List all authors
+      responses:
+        "200":
+          description: Array of authors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Author"
+
+    post:
+      tags: [Authors]
+      summary: Create a new author
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAuthor"
+      responses:
+        "201":
+          description: Created author
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Author"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+
+  /api/authors/{id}:
+    parameters:
+      - $ref: "#/components/parameters/Id"
+
+    get:
+      tags: [Authors]
+      summary: Get author by ID (includes address and books)
+      responses:
+        "200":
+          description: Author with nested address and books
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthorDetail"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    put:
+      tags: [Authors]
+      summary: Update an author
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAuthor"
+      responses:
+        "200":
+          description: Updated author
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Author"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    delete:
+      tags: [Authors]
+      summary: Delete an author
+      responses:
+        "204":
+          description: Author deleted
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  # ── Books ────────────────────────────────────────────────
+  /api/books:
+    get:
+      tags: [Books]
+      summary: List all books
+      responses:
+        "200":
+          description: Array of books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Book"
+
+    post:
+      tags: [Books]
+      summary: Create a new book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBook"
+      responses:
+        "201":
+          description: Created book
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+
+  /api/books/{id}:
+    parameters:
+      - $ref: "#/components/parameters/Id"
+
+    get:
+      tags: [Books]
+      summary: Get book by ID (includes comments)
+      responses:
+        "200":
+          description: Book with nested comments
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookDetail"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    put:
+      tags: [Books]
+      summary: Update a book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateBook"
+      responses:
+        "200":
+          description: Updated book
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    delete:
+      tags: [Books]
+      summary: Delete a book
+      responses:
+        "204":
+          description: Book deleted
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  # ── Addresses ────────────────────────────────────────────
+  /api/addresses/{authorId}:
+    parameters:
+      - name: authorId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+
+    get:
+      tags: [Addresses]
+      summary: Get address by author ID
+      responses:
+        "200":
+          description: Address for the author
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Address"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /api/addresses:
+    post:
+      tags: [Addresses]
+      summary: Create a new address
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAddress"
+      responses:
+        "201":
+          description: Created address
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Address"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "409":
+          description: Address already exists for this author
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/addresses/{id}:
+    parameters:
+      - $ref: "#/components/parameters/Id"
+
+    put:
+      tags: [Addresses]
+      summary: Update an address
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAddress"
+      responses:
+        "200":
+          description: Updated address
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Address"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    delete:
+      tags: [Addresses]
+      summary: Delete an address
+      responses:
+        "204":
+          description: Address deleted
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  # ── Comments ─────────────────────────────────────────────
+  /api/comments/{bookId}:
+    parameters:
+      - name: bookId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+
+    get:
+      tags: [Comments]
+      summary: Get comments by book ID
+      responses:
+        "200":
+          description: Array of comments for the book
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+
+  /api/comments:
+    post:
+      tags: [Comments]
+      summary: Create a new comment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateComment"
+      responses:
+        "201":
+          description: Created comment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+
+  /api/comments/{id}:
+    parameters:
+      - $ref: "#/components/parameters/Id"
+
+    put:
+      tags: [Comments]
+      summary: Update a comment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateComment"
+      responses:
+        "200":
+          description: Updated comment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    delete:
+      tags: [Comments]
+      summary: Delete a comment
+      responses:
+        "204":
+          description: Comment deleted
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+# ── Components ───────────────────────────────────────────────
+components:
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+    ValidationError:
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Validation failed
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    path:
+                      type: string
+                      example: title
+                    message:
+                      type: string
+                      example: Title is required
+
+  schemas:
+    # ── Author ──
+    Author:
+      type: object
+      required: [id, firstName, lastName]
+      properties:
+        id:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+          minLength: 1
+        lastName:
+          type: string
+          minLength: 1
+
+    CreateAuthor:
+      type: object
+      required: [firstName, lastName]
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+        lastName:
+          type: string
+          minLength: 1
+
+    UpdateAuthor:
+      type: object
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+        lastName:
+          type: string
+          minLength: 1
+
+    AuthorDetail:
+      allOf:
+        - $ref: "#/components/schemas/Author"
+        - type: object
+          properties:
+            address:
+              $ref: "#/components/schemas/Address"
+            books:
+              type: array
+              items:
+                $ref: "#/components/schemas/Book"
+
+    # ── Address ──
+    Address:
+      type: object
+      required: [id, authorId, street, city, zip, country]
+      properties:
+        id:
+          type: string
+          format: uuid
+        authorId:
+          type: string
+          format: uuid
+        street:
+          type: string
+          minLength: 1
+        city:
+          type: string
+          minLength: 1
+        zip:
+          type: string
+          minLength: 1
+        country:
+          type: string
+          minLength: 1
+
+    CreateAddress:
+      type: object
+      required: [authorId, street, city, zip, country]
+      properties:
+        authorId:
+          type: string
+          format: uuid
+        street:
+          type: string
+          minLength: 1
+        city:
+          type: string
+          minLength: 1
+        zip:
+          type: string
+          minLength: 1
+        country:
+          type: string
+          minLength: 1
+
+    UpdateAddress:
+      type: object
+      properties:
+        authorId:
+          type: string
+          format: uuid
+        street:
+          type: string
+          minLength: 1
+        city:
+          type: string
+          minLength: 1
+        zip:
+          type: string
+          minLength: 1
+        country:
+          type: string
+          minLength: 1
+
+    # ── Book ──
+    Book:
+      type: object
+      required: [id, authorId, title, isbn, pages, year]
+      properties:
+        id:
+          type: string
+          format: uuid
+        authorId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          minLength: 1
+        isbn:
+          type: string
+          minLength: 1
+        pages:
+          type: integer
+          minimum: 1
+        year:
+          type: integer
+
+    CreateBook:
+      type: object
+      required: [authorId, title, isbn, pages, year]
+      properties:
+        authorId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          minLength: 1
+        isbn:
+          type: string
+          minLength: 1
+        pages:
+          type: integer
+          minimum: 1
+        year:
+          type: integer
+
+    UpdateBook:
+      type: object
+      properties:
+        authorId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          minLength: 1
+        isbn:
+          type: string
+          minLength: 1
+        pages:
+          type: integer
+          minimum: 1
+        year:
+          type: integer
+
+    BookDetail:
+      allOf:
+        - $ref: "#/components/schemas/Book"
+        - type: object
+          properties:
+            comments:
+              type: array
+              items:
+                $ref: "#/components/schemas/Comment"
+
+    # ── Comment ──
+    Comment:
+      type: object
+      required: [id, bookId, name, text, rating, createdAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+        bookId:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+        text:
+          type: string
+          minLength: 1
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        createdAt:
+          type: string
+          format: date-time
+
+    CreateComment:
+      type: object
+      required: [bookId, name, text, rating]
+      properties:
+        bookId:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+        text:
+          type: string
+          minLength: 1
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+
+    UpdateComment:
+      type: object
+      properties:
+        bookId:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+        text:
+          type: string
+          minLength: 1
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+
+    # ── Shared ──
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
