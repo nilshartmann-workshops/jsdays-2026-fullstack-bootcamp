@@ -27,6 +27,11 @@ export type Author = {
   lastName: Scalars['String']['output'];
 };
 
+export type AuthorInput = {
+  firstName: Scalars['String']['input'];
+  lastName: Scalars['String']['input'];
+};
+
 export type Book = {
   __typename?: 'Book';
   author?: Maybe<Author>;
@@ -47,7 +52,13 @@ export type CreateBookInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createAuthor?: Maybe<Author>;
   createBook: Book;
+};
+
+
+export type MutationCreateAuthorArgs = {
+  input: AuthorInput;
 };
 
 
@@ -148,6 +159,7 @@ export type DirectiveResolverFn<TResult = Record<PropertyKey, never>, TParent = 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Author: ResolverTypeWrapper<DbAuthor>;
+  AuthorInput: AuthorInput;
   Book: ResolverTypeWrapper<DbBook>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   CreateBookInput: ResolverTypeWrapper<DbCreateBook>;
@@ -161,6 +173,7 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Author: DbAuthor;
+  AuthorInput: AuthorInput;
   Book: DbBook;
   Boolean: Scalars['Boolean']['output'];
   CreateBookInput: DbCreateBook;
@@ -188,6 +201,7 @@ export type BookResolvers<ContextType = BookStoreGraphQLContext, ParentType exte
 }>;
 
 export type MutationResolvers<ContextType = BookStoreGraphQLContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+  createAuthor?: Resolver<Maybe<ResolversTypes['Author']>, ParentType, ContextType, RequireFields<MutationCreateAuthorArgs, 'input'>>;
   createBook?: Resolver<ResolversTypes['Book'], ParentType, ContextType, RequireFields<MutationCreateBookArgs, 'input'>>;
 }>;
 

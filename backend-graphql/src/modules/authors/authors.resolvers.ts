@@ -47,5 +47,9 @@ export const authorsResolvers: Resolvers = {
     },
   },
 
-  Mutation: {},
+  Mutation: {
+    createAuthor(_, args, context) {
+      return context.dataSources.authors.create(args.input);
+    },
+  },
 };

@@ -9,6 +9,15 @@ type Author {
   books: [Book!]!
 }
 
+input AuthorInput {
+  firstName: String!
+  lastName: String!
+}
+
+extend type Mutation {
+  createAuthor(input: AuthorInput!): Author
+}
+
 # Todo 2:
 #  Erweitere den Query Type:
 extend type Query {
