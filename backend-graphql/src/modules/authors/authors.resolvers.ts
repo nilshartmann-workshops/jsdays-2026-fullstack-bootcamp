@@ -41,7 +41,11 @@ export const authorsResolvers: Resolvers = {
     },
   },
 
-  Author: {},
+  Author: {
+    books(parent, _args, context) {
+      return context.dataSources.books.getByAuthorId(parent.id);
+    },
+  },
 
   Mutation: {},
 };

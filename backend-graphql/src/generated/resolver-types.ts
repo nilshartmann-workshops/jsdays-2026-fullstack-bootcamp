@@ -21,6 +21,7 @@ export type Scalars = {
 
 export type Author = {
   __typename?: 'Author';
+  books: Array<Book>;
   firstName: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   lastName: Scalars['String']['output'];
@@ -171,6 +172,7 @@ export type ResolversParentTypes = ResolversObject<{
 }>;
 
 export type AuthorResolvers<ContextType = BookStoreGraphQLContext, ParentType extends ResolversParentTypes['Author'] = ResolversParentTypes['Author']> = ResolversObject<{
+  books?: Resolver<Array<ResolversTypes['Book']>, ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
