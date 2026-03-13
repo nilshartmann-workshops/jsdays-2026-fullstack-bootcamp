@@ -74,6 +74,19 @@ export function requireRole(role: string) {
     //  - Falls kein User vorhanden ist oder der User die Rolle nicht hat,
     //      HTTP Status 401 UNAUTHORIZED zurückliefern
     //  - Ansonsten next() aufrufen
+    const user = req.user;
+
+    if (!user) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
+
+    if (!user.roles.includes(role)) {
+      res.status(403).json({ error: `Role '${role}' required` });
+      return;
+    }
+
+    next();
   };
 }
 
