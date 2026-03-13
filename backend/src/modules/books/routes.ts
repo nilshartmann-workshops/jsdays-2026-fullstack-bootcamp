@@ -6,6 +6,6 @@ const router = Router();
 router.get("/", controller.getAll);
 router.delete("/:id", controller.remove);
 router.get("/:id", controller.getById);
-
+router.post("/", controller.create);
 
 export default router;
