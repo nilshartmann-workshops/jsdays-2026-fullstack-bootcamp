@@ -3,13 +3,16 @@
 #
 type Author {
   id: ID!
+  firstName: String!
+  lastName: String!
 }
 
 # Todo 2:
 #  Erweitere den Query Type:
-#  extend type Query {
-#     ...
-#  }
+extend type Query {
+  authors: [Author!]!
+  authorById(id: ID!): Author
+}
 #   - es soll zwei Felder geben:
 #     - authors (ohne Argumente) liefert eine Liste von Author-Objekten
 #     - authorById (Argument: "id: ID!"), liefert einen Author zurück (oder null)

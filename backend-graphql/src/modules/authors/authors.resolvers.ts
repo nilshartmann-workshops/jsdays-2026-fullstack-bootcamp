@@ -32,7 +32,14 @@ import { Resolvers } from "../../generated/resolver-types";
 //     Datenbank darüber übergeben
 
 export const authorsResolvers: Resolvers = {
-  Query: {},
+  Query: {
+    authors(_parent, _args, context) {
+      return context.dataSources.authors.getAll();
+    },
+    authorById(_parent, args, context) {
+      return context.dataSources.authors.getById(args.id);
+    },
+  },
 
   Author: {},
 
