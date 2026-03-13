@@ -30,6 +30,19 @@ export function validateSignature() {
     //  - das `user`-Objekt als `user`-Property an das `req`-Objekt setzen
     //  - next() aufrufen
 
+    const keycloakPayload = await extractPayloadFromToken(req);
+
+    if (!keycloakPayload) {
+      res.status(401).json({ error: "No token or invalid token provided" });
+      return;
+    }
+
+    req.user = {
+      email: keycloakPayload.email,
+      username: keycloakPayload.preferred_username,
+      roles: keycloakPayload.realm_access?.roles ?? [],
+    };
+
     next();
   };
 }
