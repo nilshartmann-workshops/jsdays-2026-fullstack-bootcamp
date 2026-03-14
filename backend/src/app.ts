@@ -4,6 +4,7 @@ import cors from "cors";
 import bookRoutes from "./modules/books/routes";
 import authorRoutes from "./modules/authors/routes";
 import { meRoute, validateSignature } from "./middleware/auth";
+import { createSwaggerRouter } from "./openapi";
 
 const app = express();
 
@@ -16,5 +17,7 @@ app.use("/api/books", bookRoutes);
 app.use("/api/authors", authorRoutes);
 // Zum Testen eines Access Tokens
 app.get("/api/me", meRoute);
+
+app.use("/docs", createSwaggerRouter());
 
 export default app;
