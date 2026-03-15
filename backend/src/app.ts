@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// app.use("/api", validateSignature());
+app.use("/api", validateSignature());
 
 app.use("/api/books", bookRoutes);
 app.use("/api/authors", authorRoutes);
