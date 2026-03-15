@@ -12,7 +12,7 @@ router.get("/:id", controller.getById);
 // router.post("/", validate(CreateBookSchema), controller.create);
 router.post(
   "/",
-  requireRole("role_admin"),
+  // requireRole("role_admin"),
   validate(CreateBookSchema),
   controller.create,
 );
