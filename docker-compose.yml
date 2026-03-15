@@ -1,0 +1,29 @@
+services:
+  backend:
+    image: bookstore-backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
+    environment:
+      DB_PATH: /var/lib/backend-db/data.db
+    volumes:
+      - backend_db:/var/lib/backend-db
+    networks:
+      - default
+
+  frontend:
+    image: bookstore-frontend:latest
+    build:
+      context: ./react-spa
+      dockerfile: Dockerfile
+    ports:
+      - "5200:80"
+    depends_on:
+      - backend
+    networks:
+      - default
+
+volumes:
+  backend_db:

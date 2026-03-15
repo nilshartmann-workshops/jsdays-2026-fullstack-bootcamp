@@ -21,7 +21,7 @@ export default function AddBookForm() {
 
   const mutation = useMutation({
     async mutationFn(data: CreateBook) {
-      const response = await fetch(`http://localhost:3000/api/books`, {
+      const response = await fetch(`/api/books`, {
         // todo: Request vollständig beschreiben:
         //  HTTP Methode: "POST"
         //  Headers: { content-type: "application/json" }

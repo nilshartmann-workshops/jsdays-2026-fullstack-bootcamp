@@ -10,7 +10,7 @@ export default function BookList() {
   const { data: books } = useSuspenseQuery({
     queryKey: ["books"],
     async queryFn() {
-      const response = await fetch("http://localhost:3000/api/books", {
+      const response = await fetch("/api/books", {
         headers: {
           Authorization: `Bearer ${keycloak.token}`,
         },

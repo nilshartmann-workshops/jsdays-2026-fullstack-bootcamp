@@ -8,7 +8,7 @@ import { createQueryClient } from "../../create-query-client.tsx";
 import AddBookForm from "./AddBookForm.tsx";
 
 const worker = setupWorker(
-  http.post("http://localhost:3000/api/books", async ({ request }) => {
+  http.post("/api/books", async ({ request }) => {
     const payload = (await request.json()) as object;
     const newBook = { id: "book-1234", ...payload };
     return HttpResponse.json(newBook, { status: 201 });
@@ -68,7 +68,7 @@ test("error when adding book failed", async () => {
 
   // Server ausschalten!!!!
   worker.use(
-    http.post("http://localhost:3000/api/books", async ({ request }) => {
+    http.post("/api/books", async ({ request }) => {
       return HttpResponse.error();
     }),
   );
