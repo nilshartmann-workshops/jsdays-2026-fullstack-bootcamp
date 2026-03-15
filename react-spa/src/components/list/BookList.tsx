@@ -1,11 +1,19 @@
-import { getDemoBooks } from "../../demo-data.ts";
-import { Book } from "../../types.ts";
+import { useSuspenseQuery } from "@tanstack/react-query";
+
+import { BookListSchema } from "../../types.ts";
 import BookCard from "./BookCard.tsx";
 
 export default function BookList() {
   // getDemoBooks liefert eine Liste mit Büchern
   //  - im nächsten Schritt lesen wir die Liste vom Server
-  const books: Book[] = getDemoBooks();
+  const { data: books } = useSuspenseQuery({
+    queryKey: ["books"],
+    async queryFn() {
+      const response = await fetch("http://localhost:3000/api/books");
+      const json = await response.json();
+      return BookListSchema.parse(json);
+    },
+  });
 
   // todo: Render eine Liste von BookCard-Komponenten
   //   - die Bücher, die ausgegeben werden müssen, stehen im books-Array
