@@ -25,6 +25,8 @@ test("adding book works", async () => {
     </QueryClientProvider>,
   );
 
+  await screen.locator.screenshot();
+
   const authorInput = screen.getByLabelText("Autor");
   const titleInput = screen.getByLabelText("Titel");
   const isbn = screen.getByLabelText("ISBN");

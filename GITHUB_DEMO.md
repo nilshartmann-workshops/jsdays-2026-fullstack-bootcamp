@@ -1,0 +1,7 @@
+- GitHub Action File committen
+- Ggf. den "push"-Branch darin anpassen
+- Nach dem Build:
+  - Testergebnisse liegen vor
+  - Screenshot aus dem Test liegen vor
+  - Packages wurden erzeugt
+  - docker-compose ausführen

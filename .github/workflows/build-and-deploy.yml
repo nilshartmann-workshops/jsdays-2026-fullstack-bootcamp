@@ -1,0 +1,134 @@
+name: Build and Deploy Docker Images
+
+on:
+  push:
+    branches:
+      - prepare
+#      - main
+    tags:
+      - '*'
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build-backend:
+    name: Build Backend Docker Image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository }}/backend
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest-{{branch}},enable=${{ github.ref_type == 'branch' && github.ref_name != 'main' }}
+            type=sha,prefix=,format=long
+
+      - name: Build and push Backend Docker image
+        uses: docker/build-push-action@v7
+        with:
+          context: ./backend
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  build-react-spa:
+    name: Build React SPA with Tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      checks: write
+      pull-requests: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: react-spa/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./react-spa
+        run: npm install
+
+      - name: Install Playwright browsers
+        working-directory: ./react-spa
+        run: npx playwright install --with-deps chromium
+
+      - name: Run tests
+        working-directory: ./react-spa
+        run: npm run test -- --run --reporter=junit --reporter=default --outputFile.junit=test-results.xml
+
+      - name: Upload test screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-screenshots
+          path: react-spa/vitest-screenshots/**/*
+          if-no-files-found: ignore
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: react-spa/test-results.xml
+          check_name: React SPA Test Results
+          compare_to_earlier_commit: false
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository }}/react-spa
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest-{{branch}},enable=${{ github.ref_type == 'branch' && github.ref_name != 'main' }}
+            type=sha,prefix=,format=long
+
+      - name: Build and push React SPA Docker image
+        uses: docker/build-push-action@v7
+        with:
+          context: ./react-spa
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
