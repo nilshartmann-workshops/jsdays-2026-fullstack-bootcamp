@@ -1,5 +1,6 @@
 import { getDemoBooks } from "../../demo-data.ts";
 import { Book } from "../../types.ts";
+import BookCard from "./BookCard.tsx";
 
 export default function BookList() {
   // getDemoBooks liefert eine Liste mit Büchern
@@ -14,5 +15,11 @@ export default function BookList() {
   //   - denk' dran, dass du bei der Verwendung der BookCard in der
   //     Liste das 'key'-Attribut angeben musst!
 
-  return <div className="p-2">todo: Bücherliste anzeigen!</div>;
+  return (
+    <div className="p-2">
+      {books.map((b) => (
+        <BookCard key={b.id} book={b} />
+      ))}
+    </div>
+  );
 }

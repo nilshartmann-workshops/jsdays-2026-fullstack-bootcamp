@@ -3,7 +3,7 @@ import { Book } from "../../types.ts";
 type BookCardProps = {
   book: Book;
 };
-export default function BookCard() {
+export default function BookCard({ book }: BookCardProps) {
   // todo:
   //   - Lies das book aus den Properties
   //   - zeige die Informationen aus dem Buch an:
@@ -17,5 +17,12 @@ export default function BookCard() {
   //  - CardTitle für eine Überschrift
   //  - CardInfo für einzelne Zeilen
 
-  return <div>todo!</div>;
+  return (
+    <div className={"Card"}>
+      <h2 className={"CardTitle"}>{book.title}</h2>
+      <p className={"CardInfo"}>Veröffentlicht: {book.year}</p>
+      <p className={"CardInfo"}>ISBN: {book.isbn}</p>
+      <p className={"CardInfo"}>{book.pages} Pages</p>
+    </div>
+  );
 }
