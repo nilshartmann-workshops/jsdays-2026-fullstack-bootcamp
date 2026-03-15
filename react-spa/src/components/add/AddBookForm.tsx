@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 
+import { keycloak } from "../../keycloak.ts";
 import { BookSchema, CreateBook, CreateBookSchema } from "../../types.ts";
 
 export default function AddBookForm() {
@@ -26,7 +27,10 @@ export default function AddBookForm() {
         //  Headers: { content-type: "application/json" }
         //  Body: Stringifizierte Daten aus dem Formular (JSON.stringify(data))
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${keycloak.token}`,
+        },
         body: JSON.stringify(data),
       });
 

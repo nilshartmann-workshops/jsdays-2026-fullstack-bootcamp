@@ -1,5 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 
+import { keycloak } from "../../keycloak.ts";
 import { BookListSchema } from "../../types.ts";
 import BookCard from "./BookCard.tsx";
 
@@ -9,7 +10,11 @@ export default function BookList() {
   const { data: books } = useSuspenseQuery({
     queryKey: ["books"],
     async queryFn() {
-      const response = await fetch("http://localhost:3000/api/books");
+      const response = await fetch("http://localhost:3000/api/books", {
+        headers: {
+          Authorization: `Bearer ${keycloak.token}`,
+        },
+      });
       const json = await response.json();
       return BookListSchema.parse(json);
     },

@@ -5,6 +5,7 @@ import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { createRoot } from "react-dom/client";
 
 import { createQueryClient } from "./create-query-client.tsx";
+import { keycloak } from "./keycloak.ts";
 // routeTree.gen wird vom Vite Plug-in beim Speichern
 // generiert
 import { routeTree } from "./routeTree.gen";
@@ -31,4 +32,6 @@ function startReactApp() {
   );
 }
 
-startReactApp();
+keycloak.init({ onLoad: "login-required" }).then(() => {
+  startReactApp();
+});
