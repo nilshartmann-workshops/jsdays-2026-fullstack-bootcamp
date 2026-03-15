@@ -1,9 +1,6 @@
 services:
   backend:
-    image: bookstore-backend:latest
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: ghcr.io/nilshartmann-workshops/jsdays-2026-fullstack-bootcamp/backend:latest-prepare
     env_file:
       - ./backend/.env
     environment:
@@ -14,10 +11,7 @@ services:
       - default
 
   frontend:
-    image: bookstore-frontend:latest
-    build:
-      context: ./react-spa
-      dockerfile: Dockerfile
+    image: ghcr.io/nilshartmann-workshops/jsdays-2026-fullstack-bootcamp/react-spa:latest-prepare
     ports:
       - "5200:80"
     depends_on:
