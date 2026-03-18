@@ -3,4 +3,5 @@
   <p class="CardInfo">Veröffentlicht: {{ book().year }}</p>
   <p class="CardInfo">ISBN: {{ book().isbn }}</p>
   <p class="CardInfo">{{ book().pages }} Seiten</p>
+  <button class="DeleteButton" (click)="onDelete.emit(book().id)">Löschen</button>
 </div>

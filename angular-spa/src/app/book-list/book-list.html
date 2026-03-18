@@ -1,7 +1,11 @@
-<div class="p-2">
-  @for (book of books; track book.id) {
-    <app-book-card [book]="book" />
+@if (loading()) {
+  <p class="LoadingMessage">Bitte warten, Bücher werden geladen...</p>
+} @else if (error()) {
+  <p class="ErrorMessage">Leider ist beim Lesen der Bücher ein Fehler aufgetreten.</p>
+} @else {
+  @for (book of books(); track book.id) {
+    <app-book-card [book]="book" (onDelete)="deleteBook($event)" />
   } @empty {
     <p>Keine Bücher vorhanden.</p>
   }
-</div>
+}

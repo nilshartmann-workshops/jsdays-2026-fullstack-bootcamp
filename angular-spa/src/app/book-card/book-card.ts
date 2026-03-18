@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { Book } from '../book.model';
 
 @Component({
@@ -7,4 +7,5 @@ import { Book } from '../book.model';
 })
 export class BookCard {
   readonly book = input.required<Book>();
+  readonly onDelete = output<string>();
 }

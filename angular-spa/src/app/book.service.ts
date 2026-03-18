@@ -8,7 +8,7 @@ export class BookService {
   private readonly baseUrl = '/api/books';
 
   getAll() {
-    // todo: GET /api/books mit HttpClient.get<Book[]>()
+    return this.http.get<Book[]>(this.baseUrl);
   }
 
   create(book: CreateBook) {
