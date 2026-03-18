@@ -12,7 +12,7 @@ export class BookService {
   }
 
   create(book: CreateBook) {
-    // todo: POST /api/books mit HttpClient.post<Book>()
+    return this.http.post<Book>(this.baseUrl, book);
   }
 
   delete(id: string) {

@@ -1,4 +1,49 @@
 <div class="p-2">
   <h1>Buch anlegen</h1>
-  <p>todo: Formular implementieren</p>
+
+  <form (submit)="onSubmit($event)">
+    <label for="authorId">Autor</label>
+    <input id="authorId" type="text" [value]="bookModel().authorId" disabled />
+
+    <label for="title">Titel</label>
+    <input id="title" type="text" [formField]="bookForm.title" />
+    @if (bookForm.title().touched() && bookForm.title().invalid()) {
+      @for (error of bookForm.title().errors(); track error) {
+        <p class="InputError">{{ error.message }}</p>
+      }
+    }
+
+    <label for="isbn">ISBN</label>
+    <input id="isbn" type="text" [formField]="bookForm.isbn" />
+    @if (bookForm.isbn().touched() && bookForm.isbn().invalid()) {
+      @for (error of bookForm.isbn().errors(); track error) {
+        <p class="InputError">{{ error.message }}</p>
+      }
+    }
+
+    <label for="pages">Seiten</label>
+    <input id="pages" type="number" [formField]="bookForm.pages" />
+    @if (bookForm.pages().touched() && bookForm.pages().invalid()) {
+      @for (error of bookForm.pages().errors(); track error) {
+        <p class="InputError">{{ error.message }}</p>
+      }
+    }
+
+    <label for="year">Jahr</label>
+    <input id="year" type="number" [formField]="bookForm.year" />
+    @if (bookForm.year().touched() && bookForm.year().invalid()) {
+      @for (error of bookForm.year().errors(); track error) {
+        <p class="InputError">{{ error.message }}</p>
+      }
+    }
+
+    <button type="submit" [disabled]="bookForm().invalid()">Speichern</button>
+
+    @if (success()) {
+      <div class="FormSuccess">Buch erfolgreich gespeichert!</div>
+    }
+    @if (error()) {
+      <div class="FormError">Fehler beim Speichern. Bitte versuche es erneut.</div>
+    }
+  </form>
 </div>
