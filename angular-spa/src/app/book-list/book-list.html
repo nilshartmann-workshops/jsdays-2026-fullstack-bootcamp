@@ -1,1 +1,7 @@
-<div class="p-2">todo: Bücherliste anzeigen!</div>
+<div class="p-2">
+  @for (book of books; track book.id) {
+    <app-book-card [book]="book" />
+  } @empty {
+    <p>Keine Bücher vorhanden.</p>
+  }
+</div>

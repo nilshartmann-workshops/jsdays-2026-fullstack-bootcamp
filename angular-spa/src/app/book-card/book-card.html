@@ -1,1 +1,6 @@
-<div class="Card">todo: Buch anzeigen</div>
+<div class="Card">
+  <h2 class="CardTitle">{{ book().title }}</h2>
+  <p class="CardInfo">Veröffentlicht: {{ book().year }}</p>
+  <p class="CardInfo">ISBN: {{ book().isbn }}</p>
+  <p class="CardInfo">{{ book().pages }} Seiten</p>
+</div>
