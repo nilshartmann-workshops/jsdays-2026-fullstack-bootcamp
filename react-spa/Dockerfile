@@ -1,17 +1,12 @@
 # Build stage
 FROM node:24.4.1-alpine AS build
-
 WORKDIR /app
-
 # Copy package files
 COPY package*.json ./
-
 # Install dependencies
 RUN npm install
-
 # Copy source files
 COPY . .
-
 # Build the application
 RUN npm run build
 
